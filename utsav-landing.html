@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utsav — Find Your Perfect Wedding Venue</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blush: #F9EDE8;
+    --blush-mid: #F0CFC4;
+    --blush-dark: #C97B5A;
+    --marigold: #F5C97A;
+    --marigold-dark: #C28A2A;
+    --sage: #D4E4C8;
+    --sage-dark: #6A8C5A;
+    --ivory: #FDFAF5;
+    --cream: #F7F1E8;
+    --text-dark: #2C2416;
+    --text-mid: #6B5B45;
+    --text-light: #A8927A;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ivory);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(253, 250, 245, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201, 123, 90, 0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-logo span { color: var(--blush-dark); font-style: italic; }
+
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-size: 0.875rem; font-weight: 400; color: var(--text-mid);
+    text-decoration: none; letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blush-dark); }
+
+  .nav-cta {
+    background: var(--text-dark); color: var(--ivory) !important;
+    padding: 0.6rem 1.5rem; border-radius: 2rem;
+    font-size: 0.8rem !important; letter-spacing: 0.06em !important;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--blush-dark) !important; color: white !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 5rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 3rem 6rem 4rem;
+    position: relative; z-index: 2;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;
+    color: var(--blush-dark); text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow-line {
+    width: 2rem; height: 1px; background: var(--blush-dark);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title em {
+    font-style: italic; color: var(--blush-dark);
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--text-mid); line-height: 1.75;
+    max-width: 440px; margin-bottom: 3rem;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--blush-dark); color: white;
+    padding: 0.9rem 2.25rem; border-radius: 3rem;
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.03em;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #b0673f; transform: translateY(-1px); }
+
+  .btn-secondary {
+    color: var(--text-dark); font-size: 0.9rem;
+    font-weight: 400; text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.9rem 0;
+    transition: color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--blush-dark); }
+
+  .btn-arrow {
+    width: 1.75rem; height: 1.75rem; border-radius: 50%;
+    border: 1.5px solid var(--text-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover .btn-arrow {
+    border-color: var(--blush-dark);
+    background: var(--blush-dark); color: white;
+  }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(201, 123, 90, 0.2);
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 400; color: var(--text-dark);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.75rem; color: var(--text-light);
+    margin-top: 0.25rem; font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  /* HERO RIGHT */
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--blush);
+  }
+
+  .hero-img-grid {
+    position: absolute; inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .hero-img-cell {
+    overflow: hidden; position: relative;
+  }
+
+  .hero-img-cell img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .hero-img-cell:hover img { transform: scale(1.04); }
+
+  .hero-badge {
+    position: absolute; bottom: 2rem; left: -1rem; z-index: 10;
+    background: white; border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(44, 36, 22, 0.12);
+    max-width: 220px;
+  }
+
+  .badge-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 500; color: var(--text-dark);
+    margin-bottom: 0.2rem;
+  }
+  .badge-sub { font-size: 0.72rem; color: var(--text-light); }
+  .badge-dots { display: flex; gap: 4px; margin-top: 0.5rem; }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blush-mid);
+  }
+  .badge-dot.active { background: var(--blush-dark); }
+
+  /* FLORAL DECORATION */
+  .floral-bg {
+    position: absolute; pointer-events: none; opacity: 0.06;
+    font-size: 18rem; line-height: 1;
+    color: var(--blush-dark);
+    font-family: serif;
+    user-select: none;
+  }
+
+  /* HOW IT WORKS */
+  .section {
+    padding: 7rem 4rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em;
+    color: var(--blush-dark); text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300; line-height: 1.2;
+    color: var(--text-dark); margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    font-size: 1rem; color: var(--text-mid);
+    font-weight: 300; line-height: 1.7;
+    max-width: 520px; margin-bottom: 4rem;
+  }
+
+  /* STEPS */
+  .steps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  }
+
+  .step-card {
+    background: var(--white); border-radius: 1.5rem;
+    padding: 2.5rem 2rem;
+    border: 1px solid rgba(201, 123, 90, 0.15);
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(201, 123, 90, 0.12);
+  }
+
+  .step-card::before {
+    content: attr(data-num);
+    position: absolute; top: -0.5rem; right: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem; font-weight: 300;
+    color: var(--blush-mid); opacity: 0.4; line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-icon {
+    width: 3rem; height: 3rem; border-radius: 0.75rem;
+    background: var(--blush); display: flex; align-items: center;
+    justify-content: center; margin-bottom: 1.5rem; font-size: 1.25rem;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 500; color: var(--text-dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .step-desc {
+    font-size: 0.9rem; color: var(--text-mid);
+    line-height: 1.7; font-weight: 300;
+  }
+
+  /* WHY UTSAV */
+  .why-section {
+    background: var(--cream);
+    padding: 7rem 0;
+  }
+
+  .why-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+
+  .why-visual {
+    position: relative; height: 500px;
+  }
+
+  .why-card-main {
+    position: absolute; top: 0; left: 0; right: 3rem;
+    background: white; border-radius: 1.5rem; overflow: hidden;
+    border: 1px solid rgba(201, 123, 90, 0.15);
+    height: 340px;
+  }
+
+  .why-card-main img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .why-card-accent {
+    position: absolute; bottom: 0; right: 0;
+    width: 200px;
+    background: var(--blush-dark); border-radius: 1.25rem;
+    padding: 1.5rem;
+    color: white;
+  }
+
+  .accent-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300; line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .accent-label { font-size: 0.78rem; opacity: 0.85; font-weight: 300; }
+
+  .why-tag {
+    position: absolute; top: 1.5rem; right: 0;
+    background: var(--marigold); border-radius: 2rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.78rem; font-weight: 500; color: var(--marigold-dark);
+    white-space: nowrap;
+  }
+
+  /* FEATURES LIST */
+  .features {
+    display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem;
+  }
+
+  .feature-row {
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+
+  .feature-check {
+    width: 1.5rem; height: 1.5rem; min-width: 1.5rem;
+    border-radius: 50%; background: var(--sage);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 0.1rem;
+  }
+
+  .check-mark {
+    width: 8px; height: 5px;
+    border-left: 1.5px solid var(--sage-dark);
+    border-bottom: 1.5px solid var(--sage-dark);
+    transform: rotate(-45deg) translateY(-1px);
+  }
+
+  .feature-text strong {
+    display: block; font-size: 0.95rem; font-weight: 500;
+    color: var(--text-dark); margin-bottom: 0.2rem;
+  }
+  .feature-text span {
+    font-size: 0.85rem; color: var(--text-mid); font-weight: 300; line-height: 1.6;
+  }
+
+  /* VENUE PREVIEWS */
+  .venues-section { padding: 7rem 0; }
+  .venues-inner { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+
+  .venues-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .venues-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+
+  .venue-card {
+    background: white; border-radius: 1.25rem; overflow: hidden;
+    border: 1px solid rgba(201, 123, 90, 0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .venue-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(201, 123, 90, 0.12);
+  }
+
+  .venue-img {
+    height: 200px; background: var(--blush);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .venue-img-placeholder {
+    font-size: 3rem; opacity: 0.3;
+  }
+
+  .venue-tag {
+    position: absolute; top: 1rem; left: 1rem;
+    background: white; border-radius: 2rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.7rem; font-weight: 500; color: var(--text-mid);
+  }
+
+  .venue-body { padding: 1.25rem; }
+
+  .venue-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 500; color: var(--text-dark);
+    margin-bottom: 0.25rem;
+  }
+  .venue-location {
+    font-size: 0.78rem; color: var(--text-light);
+    margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.3rem;
+  }
+
+  .venue-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 0.75rem; border-top: 1px solid rgba(201, 123, 90, 0.12);
+  }
+
+  .venue-price {
+    font-size: 0.85rem; color: var(--text-dark); font-weight: 500;
+  }
+  .venue-price span { font-size: 0.72rem; color: var(--text-light); font-weight: 300; }
+
+  .venue-capacity {
+    font-size: 0.72rem; color: var(--text-light);
+    background: var(--cream); border-radius: 2rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 6rem 4rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .cta-box {
+    background: var(--text-dark); border-radius: 2rem;
+    padding: 5rem 4rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+
+  .cta-floral {
+    position: absolute; pointer-events: none;
+    font-size: 14rem; opacity: 0.05; color: var(--marigold);
+    font-family: serif; line-height: 1;
+  }
+  .cta-floral.left { top: -2rem; left: -2rem; }
+  .cta-floral.right { bottom: -3rem; right: -2rem; }
+
+  .cta-tag {
+    display: inline-block;
+    background: rgba(245, 201, 122, 0.2); color: var(--marigold);
+    border-radius: 2rem; padding: 0.4rem 1.25rem;
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300;
+    color: white; line-height: 1.15; margin-bottom: 1rem;
+  }
+  .cta-title em { font-style: italic; color: var(--marigold); }
+
+  .cta-sub {
+    font-size: 1rem; color: rgba(255,255,255,0.6);
+    font-weight: 300; margin-bottom: 2.5rem; line-height: 1.7;
+  }
+
+  .cta-form {
+    display: flex; gap: 0.75rem; max-width: 440px; margin: 0 auto;
+  }
+
+  .cta-input {
+    flex: 1; padding: 0.85rem 1.25rem;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 3rem;
+    color: white; font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+  .cta-input::placeholder { color: rgba(255,255,255,0.4); }
+  .cta-input:focus { border-color: rgba(245, 201, 122, 0.5); }
+
+  .cta-btn {
+    background: var(--marigold); color: var(--text-dark);
+    padding: 0.85rem 1.75rem; border-radius: 3rem;
+    font-size: 0.85rem; font-weight: 500; border: none; cursor: pointer;
+    white-space: nowrap; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .cta-btn:hover { background: #e8b85a; }
+
+  /* FOOTER */
+  footer {
+    background: var(--cream);
+    padding: 3rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(201, 123, 90, 0.12);
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; color: var(--text-dark);
+  }
+  .footer-logo span { color: var(--blush-dark); font-style: italic; }
+
+  .footer-tagline {
+    font-size: 0.78rem; color: var(--text-light); margin-top: 0.25rem;
+  }
+
+  .footer-links {
+    display: flex; gap: 2rem;
+  }
+  .footer-links a {
+    font-size: 0.82rem; color: var(--text-mid); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--blush-dark); }
+
+  .footer-copy {
+    font-size: 0.75rem; color: var(--text-light);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fadeup {
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.25s; opacity: 0; }
+  .delay-3 { animation-delay: 0.4s; opacity: 0; }
+  .delay-4 { animation-delay: 0.55s; opacity: 0; }
+
+  /* VENUE COLORS */
+  .venue-img-1 { background: linear-gradient(135deg, #F9EDE8, #F0CFC4); }
+  .venue-img-2 { background: linear-gradient(135deg, #D4E4C8, #B8D4A0); }
+  .venue-img-3 { background: linear-gradient(135deg, #FAEEDA, #F5C97A55); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 5rem 1.5rem 3rem; }
+    .hero-right { height: 350px; }
+    .steps { grid-template-columns: 1fr; }
+    .why-inner { grid-template-columns: 1fr; gap: 3rem; padding: 0 1.5rem; }
+    .why-visual { height: 300px; }
+    .venues-grid { grid-template-columns: 1fr; }
+    .section { padding: 4rem 1.5rem; }
+    .venues-inner { padding: 0 1.5rem; }
+    .cta-section { padding: 3rem 1.5rem; }
+    .cta-box { padding: 3rem 1.5rem; }
+    .cta-form { flex-direction: column; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Utsav</div>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#venues">Venues</a>
+    <a href="#why">Why Utsav</a>
+    <a href="#early" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow animate-fadeup delay-1">
+      <span class="eyebrow-line"></span>
+      India's Wedding Venue Platform
+    </div>
+
+    <h1 class="hero-title animate-fadeup delay-2">
+      Find your <em>perfect</em><br>wedding venue.<br>Without the chaos.
+    </h1>
+
+    <p class="hero-subtitle animate-fadeup delay-3">
+      Utsav brings together thousands of wedding venues across India — with real availability, transparent pricing, and zero spam calls. Your dream celebration, simplified.
+    </p>
+
+    <div class="hero-actions animate-fadeup delay-4">
+      <a href="#early" class="btn-primary">Explore Venues</a>
+      <a href="#how" class="btn-secondary">
+        See how it works
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="hero-stats animate-fadeup delay-4">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Venues listed</div>
+      </div>
+      <div>
+        <div class="stat-num">12</div>
+        <div class="stat-label">Cities covered</div>
+      </div>
+      <div>
+        <div class="stat-num">₹0</div>
+        <div class="stat-label">No booking fees</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-grid">
+      <div class="hero-img-cell" style="background: linear-gradient(135deg, #F9EDE8 0%, #F0CFC4 100%); display:flex; align-items:center; justify-content:center; font-size:4rem; opacity:0.5;">🌸</div>
+      <div class="hero-img-cell" style="background: linear-gradient(135deg, #D4E4C8 0%, #B8D4A0 100%); display:flex; align-items:center; justify-content:center; font-size:4rem; opacity:0.4;">🌿</div>
+      <div class="hero-img-cell" style="background: linear-gradient(135deg, #FAEEDA 0%, #F5C97A66 100%); display:flex; align-items:center; justify-content:center; font-size:4rem; opacity:0.4;">🪔</div>
+      <div class="hero-img-cell" style="background: linear-gradient(135deg, #F9EDE8 0%, #E8C4B8 100%); display:flex; align-items:center; justify-content:center; font-size:4rem; opacity:0.4;">💐</div>
+    </div>
+
+    <div class="hero-badge">
+      <div class="badge-title">The Oberoi, Bangalore</div>
+      <div class="badge-sub">Available · 3 dates this month</div>
+      <div class="badge-dots">
+        <div class="badge-dot active"></div>
+        <div class="badge-dot active"></div>
+        <div class="badge-dot active"></div>
+        <div class="badge-dot"></div>
+        <div class="badge-dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section">
+    <div class="section-label"><span class="eyebrow-line"></span> How It Works</div>
+    <h2 class="section-title">Book your venue in<br>three simple steps</h2>
+    <p class="section-sub">
+      No more calling 20 venues, no more vague quotes, no more wasted weekends on venue visits that go nowhere.
+    </p>
+
+    <div class="steps">
+      <div class="step-card" data-num="01">
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Search & Filter</div>
+        <p class="step-desc">
+          Enter your city, guest count, budget, and preferred dates. Instantly see venues that match — with real availability shown upfront.
+        </p>
+      </div>
+
+      <div class="step-card" data-num="02">
+        <div class="step-icon">📋</div>
+        <div class="step-title">Compare & Shortlist</div>
+        <p class="step-desc">
+          View detailed venue pages with photos, pricing breakdowns, amenities, capacity, and verified reviews from real couples.
+        </p>
+      </div>
+
+      <div class="step-card" data-num="03">
+        <div class="step-icon">✅</div>
+        <div class="step-title">Book with Confidence</div>
+        <p class="step-desc">
+          Confirm your venue directly on Utsav. Pay a small deposit to lock the date. No middlemen, no spam, no surprises.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY UTSAV -->
+<section id="why" class="why-section">
+  <div class="why-inner">
+    <div class="why-visual">
+      <div class="why-card-main" style="background: linear-gradient(135deg, #F9EDE8, #F0CFC4); display:flex; align-items:center; justify-content:center; font-size:6rem; opacity:0.6;">🏛️</div>
+      <div class="why-card-accent">
+        <div class="accent-num">10M+</div>
+        <div class="accent-label">Weddings happen in India every year — most still booked offline</div>
+      </div>
+      <div class="why-tag">✨ India's first real-time venue platform</div>
+    </div>
+
+    <div>
+      <div class="section-label"><span class="eyebrow-line"></span> Why Utsav</div>
+      <h2 class="section-title">The wedding venue market is broken.<br><em>We're fixing it.</em></h2>
+
+      <div class="features">
+        <div class="feature-row">
+          <div class="feature-check"><div class="check-mark"></div></div>
+          <div class="feature-text">
+            <strong>Real availability, not inquiry forms</strong>
+            <span>See which dates are actually open before you fall in love with a venue.</span>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-check"><div class="check-mark"></div></div>
+          <div class="feature-text">
+            <strong>Transparent, upfront pricing</strong>
+            <span>No more "it depends" quotes. See actual price ranges per plate, per day, all-inclusive.</span>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-check"><div class="check-mark"></div></div>
+          <div class="feature-text">
+            <strong>Zero spam calls</strong>
+            <span>Unlike other platforms that sell your number to 10 vendors, we only connect you when you choose.</span>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-check"><div class="check-mark"></div></div>
+          <div class="feature-text">
+            <strong>Verified reviews from real couples</strong>
+            <span>Every review is linked to a confirmed booking — no fake testimonials, ever.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE PREVIEWS -->
+<section id="venues" class="venues-section">
+  <div class="venues-inner">
+    <div class="venues-header">
+      <div>
+        <div class="section-label"><span class="eyebrow-line"></span> Featured Venues</div>
+        <h2 class="section-title" style="margin-bottom:0;">Handpicked across India</h2>
+      </div>
+      <a href="#early" class="btn-secondary" style="margin-bottom:0.5rem;">
+        View all venues <span class="btn-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="venues-grid">
+      <div class="venue-card">
+        <div class="venue-img venue-img-1">
+          <div class="venue-img-placeholder">🏰</div>
+          <div class="venue-tag">Palace</div>
+        </div>
+        <div class="venue-body">
+          <div class="venue-name">The Grand Palace</div>
+          <div class="venue-location">📍 Jaipur, Rajasthan</div>
+          <div class="venue-meta">
+            <div class="venue-price">₹2,500 <span>per plate onwards</span></div>
+            <div class="venue-capacity">Up to 1,200 guests</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-img venue-img-2">
+          <div class="venue-img-placeholder">🌿</div>
+          <div class="venue-tag">Garden</div>
+        </div>
+        <div class="venue-body">
+          <div class="venue-name">The Green Estate</div>
+          <div class="venue-location">📍 Bangalore, Karnataka</div>
+          <div class="venue-meta">
+            <div class="venue-price">₹1,800 <span>per plate onwards</span></div>
+            <div class="venue-capacity">Up to 500 guests</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-img venue-img-3">
+          <div class="venue-img-placeholder">✨</div>
+          <div class="venue-tag">Luxury Hall</div>
+        </div>
+        <div class="venue-body">
+          <div class="venue-name">The Golden Pavilion</div>
+          <div class="venue-location">📍 Mumbai, Maharashtra</div>
+          <div class="venue-meta">
+            <div class="venue-price">₹3,200 <span>per plate onwards</span></div>
+            <div class="venue-capacity">Up to 800 guests</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="early" class="cta-section">
+  <div class="cta-box">
+    <div class="cta-floral left">❋</div>
+    <div class="cta-floral right">✿</div>
+    <div class="cta-tag">Coming Soon</div>
+    <h2 class="cta-title">Your perfect venue is<br>waiting to be <em>discovered.</em></h2>
+    <p class="cta-sub">
+      Be among the first couples and venue owners to join Utsav.<br>Early access members get priority listing and zero commission for 6 months.
+    </p>
+    <div class="cta-form">
+      <input class="cta-input" type="email" placeholder="Enter your email address" />
+      <button class="cta-btn">Get Early Access</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Utsav</div>
+    <div class="footer-tagline">India's wedding venue platform</div>
+  </div>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">List Your Venue</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Utsav. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
